@@ -3,17 +3,20 @@
 ``` javascript
 const Expression = require("./Expression.js");
 
-const ex = new Expression("332x + 32 + 34x");
+const ex = new Expression("12x + 23 + 21 + 1x + 32x + 120 + 19x");
 
 console.log(ex.stringify());
-ex.multiply(4);
+ex.sort();
+console.log(ex.stringify());
+ex.multiply(8);
 console.log(ex.stringify());
 ```
 
 ```
 $ node index.js
-332x + 32 + 34x
-1328x + 1284 + 136x
+12x + 23 + 21 + 1x + 32x + 120 + 19x
+64x + 164
+512x + 13128
 ```
 
 ## To Do

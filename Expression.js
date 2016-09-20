@@ -13,8 +13,11 @@ function count(arr, item) {
 function compare(arr0, arr1) {
 	if(arr0.length !== arr1.length) return false;
 
-	arr0 = arr0.slice().sort();
-	arr1 = arr1.slice().sort();
+	arr0 = arr0.slice();
+	arr1 = arr1.slice();
+
+	arr0.sort();
+	arr1.sort();
 
 	for(let i = 0; i < arr0.length; i++) {
 		if(arr0[i] !== arr1[i]) return false;
@@ -23,7 +26,7 @@ function compare(arr0, arr1) {
 	return true;
 }
 
-function add(arr) {
+function sum(arr) {
 	let n = 0;
 
 	arr.forEach(a => n += a);
@@ -63,7 +66,7 @@ module.exports = class Expression {
 		});
 	}
 
-	factorize() {
+	sort() {
 		this.terms.forEach(term => {
 			let n = 1;
 
@@ -80,15 +83,30 @@ module.exports = class Expression {
 				if(a === b) return;
 
 				if(compare(a.filter(isSymbolic), b.filter(isSymbolic))) {
-					const n = b.filter(isNumeric)[0];
+					const aSum = sum(a.filter(isNumeric).map(n => {
+						a.splice(a.indexOf(n), 1);
+						return n;
+					}));
 
-					console.log(n);
-
-					a[a.indexOf(a.filter(isNumeric)[0])] += n;
-
+					a.push(aSum + sum(b.filter(isNumeric)));
 					this.terms.splice(i, 1);
 				}
 			});
+		});
+
+		this.terms.forEach(t => {
+			t.sort((a, b) => {
+				if(isNumeric(a) && isNumeric(b)) return 0;
+				if(isSymbolic(a) && isSymbolic(b)) return 0;
+				if(isNumeric(a) && isSymbolic(b)) return -1;
+				if(isSymbolic(a) && isNumeric(b)) return 1;
+			});
+		});
+
+		this.terms.sort((a, b) => {
+			if(a.length == b.length) return 0;
+			if(a.length < b.length) return 1;
+			if(a.length > b.length) return -1;
 		});
 	}
 
@@ -97,21 +115,8 @@ module.exports = class Expression {
 			term.push(n);
 		});
 
-		this.factorize();
+		this.sort();
 	}
-
-	/*
-	differentiate(c) {
-		this.terms.forEach(term => {
-			if(term.indexOf(c) > -1) {
-				term.splice(term.indexOf(c), 1);
-				term.push()
-			}
-
-
-		});
-	}
-	*/
 
 	stringify() {
 		return this.terms.map(t => t.join("")).join(" + ");
