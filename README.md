@@ -22,5 +22,6 @@ $ node index.js
 ## To Do
 
 * ~~Parse positive polynomials~~
-* ~~Factorize numeric constants~~
-* Factorize symbolic constants
+* ~~Sum numeric constants~~
+* ~~Find like terms by common symbolic constants~~
+* Differentiation
