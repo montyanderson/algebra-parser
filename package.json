@@ -4,7 +4,7 @@
   "description": "``` javascript const Expression = require(\"./Expression.js\");",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run build && ",
     "build": "browserify Expression.js --standalone Expression -t [ babelify --presets [ es2015 ] ] > bundle.js"
   },
   "repository": {
